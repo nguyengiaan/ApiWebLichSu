@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "HI3yOkvJyfJz1fB9/RtbzpBdroTFpVuwJ/J6wfeAwJc=",
+  "Source": "ApiWebLichSu",
+  "BasePath": "_content/ApiWebLichSu",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ApiWebLichSu\\wwwroot",
+      "Source": "ApiWebLichSu",
+      "ContentRoot": "D:\\NCKH2\\ApiWebLichSu\\ApiWebLichSu\\wwwroot\\",
+      "BasePath": "_content/ApiWebLichSu",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

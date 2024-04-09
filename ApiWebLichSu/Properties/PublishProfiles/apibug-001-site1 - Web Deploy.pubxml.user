@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAlTl76205QkO/99N19qHGUgAAAAACAAAAAAAQZgAAAAEAACAAAADA8VXV/Mwe4n0WBhPK9ktzqkKQ6eJ86d9Xt3pBsLbYTgAAAAAOgAAAAAIAACAAAABjm6LaP6EBq9Pw0a89X3LQgMoJ4f/s1/IRZOCXb3dRNyAAAACxuEnFWDPO4p5micen5GxInQYSNAaoyI3ElHdxd/K4skAAAADwne2d9GQ5fX7HvJMhsIoQTaVKBXGFZhW3028ccIra/WCGgHYFZSJnFsul1YxSAB5+9flfUwZpfMd9zbfyo0px</EncryptedPassword>
+    <History>False|2024-04-09T06:11:29.8041193Z;False|2024-04-09T13:11:19.1330579+07:00;False|2024-04-09T13:08:06.7582764+07:00;False|2024-04-09T13:05:32.4028598+07:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="MyDB">
+      <Value>Data Source=DESKTOP-O10K6DV\SQLEXPRESS%3bInitial Catalog=DbHistory%3bIntegrated Security=True%3bEncrypt=True%3bTrust Server Certificate=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="ApiWebLichSu.Data.MyDbcontext">
+      <Value>Data Source=SQL9001.site4now.net%3bInitial Catalog=db_aa6a47_weblichsu%3bUser Id=db_aa6a47_weblichsu_admin%3bPassword=YOUR_DB_PASSWORD</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAlTl76205QkO/99N19qHGUgAAAAACAAAAAAAQZgAAAAEAACAAAAADsHRK9z2g6wBIBQjIzhB0+fJY9eSoqgD4iP4ccKo/IAAAAAAOgAAAAAIAACAAAADlyYyfKf+8fNZL4xDdaObFjTs3s9o1bAe9pUh6iC6ogCAAAAB6pyYOL6MOXH38SYcjXjRkLIgrnKm6cgp1s/zlebhO4kAAAAAEhkgiT0lEcpvXAs8fJ0tHpoJUuxmbj9oUcb9tAs9K4pLuS+u0x+UxyZaVptKz+51BRcMjLgAlF1cKL3u7PWHd</EncryptedPassword>
+    <History>True|2024-04-06T05:55:22.7235816Z;True|2024-04-06T12:54:35.6242125+07:00;True|2024-04-06T12:53:20.0117071+07:00;True|2024-04-06T12:49:05.9344792+07:00;True|2024-04-06T12:41:12.0904181+07:00;True|2024-04-06T12:36:37.5510041+07:00;True|2024-04-06T12:35:45.7849759+07:00;False|2024-04-06T12:35:08.6289075+07:00;False|2024-04-06T12:31:33.8043356+07:00;False|2024-04-06T12:29:59.4704201+07:00;False|2024-04-06T12:22:40.1137513+07:00;False|2024-04-06T12:19:39.6240366+07:00;False|2024-04-06T12:18:12.6803703+07:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="MyDB">
+      <Value>Data Source=SQL5113.site4now.net%3bInitial Catalog=db_aa7505_weblichsu%3bUser Id=db_aa7505_weblichsu_admin%3bPassword=01636599626a</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="ApiWebLichSu.Data.MyDbcontext">
+      <Value>Data Source=SQL5113.site4now.net%3bInitial Catalog=db_aa7505_weblichsu%3bUser Id=db_aa7505_weblichsu_admin%3bPassword=01636599626a</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
