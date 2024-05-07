@@ -12,12 +12,26 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using ApiWebLichSu.Service.Interface;
 using Microsoft.Extensions.FileProviders;
+using ApiWebLichSu.Hubs;
+using ApiWebLichSu.Model;
+using ApiWebLichSu.Service.Reponse;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000") // Thay đổi thành nguồn gốc của ứng dụng của bạn
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // Cho phép gửi cookie và thông tin xác thực
+    });
+});
+
 builder.Services.AddSwaggerGen(option=>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "History API", Version = "v1" });
@@ -69,22 +83,26 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
 });
+builder.Services.AddSignalR();
+
 builder.Services.AddScoped<IHistory, HistoryReponse>();
 builder.Services.AddScoped<ICatogerResponse, CatogeryResponse>();
 builder.Services.AddScoped<IAccountReponse,AccountResponse>();
 builder.Services.AddScoped<IQuest, QuestReponse>();
+builder.Services.AddScoped<IRanking,RankResponse>();
+builder.Services.AddSingleton<IDictionary<string, UserConnection>>(opts => new Dictionary<string, UserConnection>());
 var app = builder.Build();
+
+
+app.UseRouting();
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
-app.UseCors(builder=>{
-    builder.AllowAnyOrigin();
-    builder.AllowAnyMethod();
-    builder.AllowAnyHeader();
-});
+}
+
+app.UseCors("AllowOrigin");
 app.UseStaticFiles(
     new StaticFileOptions
     {
@@ -95,6 +113,11 @@ app.UseStaticFiles(
     );
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.MapControllers();
-app.Run();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chat");
+    endpoints.MapControllers();
+    app.Run();
+});
+
 

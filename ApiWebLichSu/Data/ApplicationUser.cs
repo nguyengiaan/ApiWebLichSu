@@ -11,6 +11,7 @@ namespace ApiWebLichSu.Data
 
         public List<History> History { get; set; }
         
+        public Ranking Rank { get; set; }
         public ApplicationUser()  
         {
             Comments = new List<Comment>(); 

@@ -7,6 +7,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ApiWebLichSu.Service.Interface;
+using ApiWebLichSu.Model.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiWebLichSu.Service
 {
@@ -16,13 +18,15 @@ namespace ApiWebLichSu.Service
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly MyDbcontext _context;
 
-        public AccountResponse(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser>signInManager,IConfiguration configuration,RoleManager<IdentityRole> roleManager)
+        public AccountResponse(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser>signInManager,IConfiguration configuration,RoleManager<IdentityRole> roleManager,MyDbcontext context)
         { 
             this.userManager=userManager;
             this.signInManager=signInManager;
             this.configuration=configuration;
             this.roleManager = roleManager;
+            _context=context;
         }
         public async Task<string> SignInAsync(SignIn model)
         {
@@ -110,5 +114,26 @@ namespace ApiWebLichSu.Service
             }
             return result;
         }
+        public async Task<List<AccountVM>> GetUserAsp()
+        {
+            try
+            {
+                var account = new List<AccountVM>();
+                var data=await  _context.Appuser.FromSqlRaw("EXECUTE GETUSERASP").ToListAsync();
+                account = data.Select(user => new AccountVM
+                {
+                    Id = user.Id,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PasswordHash = user.PasswordHash
+                }).ToList();
+                return (account);
+            }
+            catch (Exception ex) 
+            {
+                return new List<AccountVM>();
+            }
+        }
+
     }
 }

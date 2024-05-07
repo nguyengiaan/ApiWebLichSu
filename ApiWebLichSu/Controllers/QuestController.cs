@@ -3,6 +3,7 @@ using ApiWebLichSu.Model.DTO;
 using ApiWebLichSu.Service.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace ApiWebLichSu.Controllers
 {
@@ -34,12 +35,14 @@ namespace ApiWebLichSu.Controllers
             }
             if (model.file != null)
             {
+
                 var fileResult = _quest.SaveImage(model.file);
-                if (fileResult.Item1 == 1)
+                if ( fileResult.Item1 ==1)
                 {
-                    model.image_quest = fileResult.Item2; // getting name of image
+                    model.image_quest = fileResult.Item2;
                 }
                 var productResult = _quest.AddQuestColl(model);
+        
                 if (productResult)
                 {
                     status.StatusCode = 1;
@@ -84,14 +87,29 @@ namespace ApiWebLichSu.Controllers
             }
 
         }
+        [HttpGet("GetCollectionUser")]
+        public async Task<IActionResult> GetCollectionAdmin(string iduser)
+        {
+            try
+            {
+                var list = await _quest.GetQuestCollecctionuser(iduser);
+                return Ok(list);
+            }
+            catch (Exception ex)
+
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
         [HttpPost("Themcauhoi")]
-        public async Task<IActionResult> Themcauhoi([FromForm]QuestionVM questionVM)
+        public async Task<IActionResult> Themcauhoi(QuestionVM questionVM)
         {
            
                 var list = await _quest.Addquestion(questionVM);
                 if (list)
                 {
-                    return Ok();
+                    return Ok("đã thành công");
                 }
                 else
                 {
@@ -99,7 +117,19 @@ namespace ApiWebLichSu.Controllers
                 }
                 
         }
-        
+        [HttpGet("GetCollectionAll")]
+        public async Task<IActionResult> GetCollectionAll()
+        {
+            var list = await _quest.GetQuestCollecctionAll();
+            if (list !=null)
+            {
+                return Ok(list);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 
 

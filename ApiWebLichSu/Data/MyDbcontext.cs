@@ -22,7 +22,7 @@ namespace ApiWebLichSu.Data
 
         public DbSet<QuestCollection> QuestCollection { get; set; }
         public DbSet<ApplicationUser> Appuser { get;set; }
-        public DbSet<ApplicationRoles> Roles { get; set; }
+        public DbSet<Ranking> Rank { get; set; }
 
         #endregion
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace ApiWebLichSu.Data
             //table History
             modelBuilder.Entity<History>().ToTable("History").HasKey(e => e.ID_HISTORY);
             modelBuilder.Entity<History>().Property(e => e.ID_HISTORY).ValueGeneratedOnAdd();
-            modelBuilder.Entity<History>().Property(e => e.DATESUBMIT).HasMaxLength(100);
+          
             modelBuilder.Entity<History>().Property(e => e.CONTENT).HasMaxLength(int.MaxValue);
             modelBuilder.Entity<History>().Property(e => e.TITLE).HasMaxLength(int.MaxValue);
             modelBuilder.Entity<History>().HasOne(e => e.CATOGERY).WithMany(e => e.HISTORY).HasForeignKey(e => e.ID_CATOGERY).OnDelete(DeleteBehavior.Cascade); ;
@@ -67,7 +67,11 @@ namespace ApiWebLichSu.Data
             modelBuilder.Entity<QuestCollection>().Property(e => e.id_questcollection).ValueGeneratedOnAdd();
             modelBuilder.Entity<QuestCollection>().Property(e => e.title_collection).HasMaxLength(int.MaxValue);
             modelBuilder.Entity<QuestCollection>().Property(e => e.image_quest).HasMaxLength(int.MaxValue);
-           
+            // table Ranking
+            modelBuilder.Entity<Ranking>().ToTable("Rank").HasKey(e => e.Id_Ranking);
+            modelBuilder.Entity<Ranking>().Property(e => e.Id_Ranking).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Ranking>().Property(e => e.score).HasColumnType("int");
+            modelBuilder.Entity<Ranking>().HasOne(e => e.user).WithOne(e => e.Rank).HasForeignKey<Ranking>(e => e.Id);
         }
     }
 }

@@ -66,3 +66,4 @@ D:\NCKH2\ApiWebLichSu\ApiWebLichSu\obj\Debug\net6.0\ref\ApiWebLichSu.dll
 D:\NCKH2\ApiWebLichSu\ApiWebLichSu\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\NCKH2\ApiWebLichSu\ApiWebLichSu\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\NCKH2\ApiWebLichSu\ApiWebLichSu\bin\Debug\net6.0\ApiWebLichSu.staticwebassets.runtime.json
+D:\NCKH2\ApiWebLichSu\ApiWebLichSu\obj\Debug\net6.0\ApiWebLichSu.sourcelink.json

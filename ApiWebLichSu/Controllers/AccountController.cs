@@ -44,7 +44,20 @@ namespace ApiWebLichSu.Controllers
             }
             return Ok(result);
         }
-
+        [HttpGet("GetDataUser")]
+        public async Task<IActionResult> GetDataUser()
+        {
+            try
+            {
+                var resul = await _accountReponse.GetUserAsp();
+                return Ok(resul);
+            }
+            catch(Exception ex) 
+            { 
+                return BadRequest(ex.Message);
+            }
+          
+        }
 
 
     }

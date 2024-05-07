@@ -8,6 +8,7 @@ using ApiWebLichSu.Service.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ApiWebLichSu.Service
 {
@@ -39,7 +40,7 @@ namespace ApiWebLichSu.Service
                 return false;
             }
         }
-        public async Task<bool> Addquestion([FromForm] QuestionVM question)
+        public async Task<bool> Addquestion( QuestionVM question)
         {
             try
             {
@@ -81,34 +82,34 @@ namespace ApiWebLichSu.Service
 
         }
 
-        public async Task< List<QuestCollection>> GetQuestCollecction(string iduser)
+        public async Task<List<QuestCollection>> GetQuestCollecction(string Id)
         {
-            var userParameter = new SqlParameter("@USER", iduser);
+            var userParameter = new SqlParameter("@USER", Id);
             var list = await _context.QuestCollection.FromSqlRaw("EXECUTE GETQUESTID @USER", userParameter).ToListAsync();
             return list;
         }
-
-        public Task GetQuestCollecction()
+        public async Task<List<QuestCollection>> GetQuestCollecctionuser(string Id)
         {
-            throw new NotImplementedException();
+            var userParameter = new SqlParameter("@USER", Id);
+            var list = await _context.QuestCollection.FromSqlRaw("EXECUTE GETQUESTUSER @USER", userParameter).ToListAsync();
+            return list;
         }
-
-        public async Task< List<QuestCollection>> GetQuestCollecctionAdmin()
+        public async Task<List<QuestCollection>> GetQuestCollecctionAdmin()
         {
             try
             {
                 return await _context.QuestCollection.FromSqlRaw("EXECUTE SelectAllQuestAdmin").ToListAsync();
             }
             catch (Exception ex)
-            { 
-               return new List<QuestCollection>();
+            {
+                return new List<QuestCollection>();
             }
         }
 
 
         public List<QuestVM> GetQuestVM(int idquest)
         {
-      
+
             var listquest = from quest in _context.Quest
                             join answerQuest in _context.AnswerQuest on quest.Id_quest equals answerQuest.Id_quest
                             join question in _context.Question on quest.Id_quest equals question.Id_quest
@@ -158,7 +159,34 @@ namespace ApiWebLichSu.Service
             }
         }
 
-   
+        public async Task<string> SaveImage1(IFormFile imageFile)
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray());
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var contentPath = this.environment.ContentRootPath;
+            // path = "c://projects/productminiapi/uploads" ,not exactly something like that
+            var path = Path.Combine(contentPath, "Uploads", imageName);
+            using (var filestream = new FileStream(path, FileMode.Create))
+            {
+                imageFile.CopyToAsync(filestream).Wait();
+            }
+            return imageName;
+        }
+
+        public async Task<List<QuestCollection>> GetQuestCollecctionAll()
+        {
+            int page = 1;
+            int pageSize = 10;
+            try
+            {
+                var data = await _context.QuestCollection.ToListAsync();
+                return data;
+            }
+            catch(Exception ex) 
+            {
+                return new List<QuestCollection>();
+            }
+        }
     }
 }
 

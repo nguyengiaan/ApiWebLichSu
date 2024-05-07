@@ -8,13 +8,13 @@ namespace ApiWebLichSu.Service.Interface
         public List<QuestVM> GetQuestVM(int idquest);
 
         public Tuple<int, string> SaveImage(IFormFile imageFile);
-
         public bool AddQuestColl(CollectionVM item);
-
         public Task<List<QuestCollection>> GetQuestCollecction(string iduser);
-
         public Task<Boolean> Addquestion(QuestionVM question);
-
         public Task< List<QuestCollection>> GetQuestCollecctionAdmin();
+        public Task<string> SaveImage1(IFormFile imageFile);
+        public Task<List<QuestCollection>> GetQuestCollecctionuser(string iduser);
+        public Task<List<QuestCollection>> GetQuestCollecctionAll();
+
     }
 }

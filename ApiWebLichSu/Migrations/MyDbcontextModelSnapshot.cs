@@ -113,9 +113,6 @@ namespace ApiWebLichSu.Migrations
 
                     b.HasKey("id_Answer");
 
-                    b.HasIndex("Id_quest")
-                        .IsUnique();
-
                     b.ToTable("AnswerQuest", (string)null);
                 });
 
@@ -188,22 +185,18 @@ namespace ApiWebLichSu.Migrations
                         .HasMaxLength(2147483647)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DATESUBMIT")
-                        .HasMaxLength(100)
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ID_CATOGERY")
+                    b.Property<int?>("ID_CATOGERY")
                         .HasColumnType("int");
 
-                    b.Property<int>("ID_USER")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TITLE")
                         .IsRequired()
                         .HasMaxLength(2147483647)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("USERSID_USER")
+                    b.Property<int?>("UsersID_USER")
                         .HasColumnType("int");
 
                     b.HasKey("ID_HISTORY");
@@ -212,7 +205,7 @@ namespace ApiWebLichSu.Migrations
 
                     b.HasIndex("ID_CATOGERY");
 
-                    b.HasIndex("USERSID_USER");
+                    b.HasIndex("UsersID_USER");
 
                     b.ToTable("History", (string)null);
                 });
@@ -248,6 +241,9 @@ namespace ApiWebLichSu.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_quest"), 1L, 1);
 
+                    b.Property<int>("Answerid_Answer")
+                        .HasColumnType("int");
+
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(max)");
 
@@ -264,6 +260,8 @@ namespace ApiWebLichSu.Migrations
 
                     b.HasKey("Id_quest");
 
+                    b.HasIndex("Answerid_Answer");
+
                     b.HasIndex("UsersID_USER");
 
                     b.HasIndex("id_questcollection");
@@ -278,6 +276,9 @@ namespace ApiWebLichSu.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_questcollection"), 1L, 1);
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("image_quest")
                         .IsRequired()
@@ -302,9 +303,6 @@ namespace ApiWebLichSu.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Question"), 1L, 1);
 
-                    b.Property<int>("AnswerQuestid_Answer")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_quest")
                         .HasColumnType("int");
 
@@ -318,11 +316,32 @@ namespace ApiWebLichSu.Migrations
 
                     b.HasKey("Id_Question");
 
-                    b.HasIndex("AnswerQuestid_Answer");
-
                     b.HasIndex("Id_quest");
 
                     b.ToTable("Question", (string)null);
+                });
+
+            modelBuilder.Entity("ApiWebLichSu.Model.Ranking", b =>
+                {
+                    b.Property<int>("Id_Ranking")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Ranking"), 1L, 1);
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_Ranking");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasFilter("[Id] IS NOT NULL");
+
+                    b.ToTable("Rank", (string)null);
                 });
 
             modelBuilder.Entity("ApiWebLichSu.Model.Users", b =>
@@ -483,17 +502,6 @@ namespace ApiWebLichSu.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ApiWebLichSu.Model.AnswerQuest", b =>
-                {
-                    b.HasOne("ApiWebLichSu.Model.Quest", "quest")
-                        .WithOne("Answer")
-                        .HasForeignKey("ApiWebLichSu.Model.AnswerQuest", "Id_quest")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("quest");
-                });
-
             modelBuilder.Entity("ApiWebLichSu.Model.Comment", b =>
                 {
                     b.HasOne("ApiWebLichSu.Data.ApplicationUser", "User")
@@ -518,18 +526,13 @@ namespace ApiWebLichSu.Migrations
                     b.HasOne("ApiWebLichSu.Model.Catogery", "CATOGERY")
                         .WithMany("HISTORY")
                         .HasForeignKey("ID_CATOGERY")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ApiWebLichSu.Model.Users", "USERS")
+                    b.HasOne("ApiWebLichSu.Model.Users", null)
                         .WithMany("Historys")
-                        .HasForeignKey("USERSID_USER")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsersID_USER");
 
                     b.Navigation("CATOGERY");
-
-                    b.Navigation("USERS");
                 });
 
             modelBuilder.Entity("ApiWebLichSu.Model.Permission", b =>
@@ -545,6 +548,12 @@ namespace ApiWebLichSu.Migrations
 
             modelBuilder.Entity("ApiWebLichSu.Model.Quest", b =>
                 {
+                    b.HasOne("ApiWebLichSu.Model.AnswerQuest", "Answer")
+                        .WithMany()
+                        .HasForeignKey("Answerid_Answer")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ApiWebLichSu.Model.Users", null)
                         .WithMany("quests")
                         .HasForeignKey("UsersID_USER");
@@ -555,26 +564,29 @@ namespace ApiWebLichSu.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Answer");
+
                     b.Navigation("questCollection");
                 });
 
             modelBuilder.Entity("ApiWebLichSu.Model.Question", b =>
                 {
-                    b.HasOne("ApiWebLichSu.Model.AnswerQuest", "AnswerQuest")
-                        .WithMany()
-                        .HasForeignKey("AnswerQuestid_Answer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ApiWebLichSu.Model.Quest", "Quest")
                         .WithMany("Questions")
                         .HasForeignKey("Id_quest")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AnswerQuest");
-
                     b.Navigation("Quest");
+                });
+
+            modelBuilder.Entity("ApiWebLichSu.Model.Ranking", b =>
+                {
+                    b.HasOne("ApiWebLichSu.Data.ApplicationUser", "user")
+                        .WithOne("Rank")
+                        .HasForeignKey("ApiWebLichSu.Model.Ranking", "Id");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -633,6 +645,9 @@ namespace ApiWebLichSu.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("History");
+
+                    b.Navigation("Rank")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ApiWebLichSu.Model.Catogery", b =>
@@ -642,9 +657,6 @@ namespace ApiWebLichSu.Migrations
 
             modelBuilder.Entity("ApiWebLichSu.Model.Quest", b =>
                 {
-                    b.Navigation("Answer")
-                        .IsRequired();
-
                     b.Navigation("Questions");
                 });
 

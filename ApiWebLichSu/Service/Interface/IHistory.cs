@@ -7,8 +7,9 @@ namespace ApiWebLichSu.Service.Interface
     {
         List<HistoryVM> GetAll();
         HistoryVM GetbyId(int id);
-        HistoryVM Add(HistoryVM vm);
-        void Delete(int id);
+        public Task< bool> Add(HistoryVM2 vm);
         void Update(HistoryVM vm);
+        public Task<bool> Delete(int id);
+        public Task<bool> Update(HistoryVM2 vm2,int idhis );
     }
 }
